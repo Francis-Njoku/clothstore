@@ -85,12 +85,12 @@ DATABASES = {
     'default': {
         'ENGINE':  'django.db.backends.postgresql',
         'NAME': 'clothstore',
-        'USER': 'postgress',
+        'USER': 'postgres',
         'PASSWORD': 'roygbiv7',
         'HOST': '127.0.0.1',
         'PORT': ''
     }
-    
+
 }
 
 
