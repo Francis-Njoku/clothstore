@@ -7,5 +7,5 @@ def home(request):
         context = {"username_is": username_is}
     else:
         context = {"username_is": "Unknown"}
-    template = 'base.html'
+    template = 'products/home.html'
     return render(request, template, context)
