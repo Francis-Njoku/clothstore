@@ -1,5 +1,17 @@
  {% extends "base.html"%}
 
+{% block head_title %}
+Welcome to 
+{% endblock %}
+{% block styles %}
+.jumbotron {
+    color: red
+}
+{% endblock %}
+
+{% block jquery %}
+alert("welcome!");
+{% endblock%}
  {% block content%}
 <div class="jumbotron">
     <h1>Navbar example</h1>
