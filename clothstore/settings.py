@@ -132,3 +132,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "media")
+#MEDIA_ROOL = '/Users/ASUS/Documents/django/clothstore/static/media/'
+
+STATIC_ROOT =  os.path.join(os.path.dirname(BASE_DIR), "static", "static_root"),
+STATICFILES_DIR = [
+     os.path.join(os.path.dirname(BASE_DIR), "static", "static_files"),
+]
