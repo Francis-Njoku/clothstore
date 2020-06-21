@@ -1,15 +1,19 @@
 from django.shortcuts import render
 
+
 # Create your views here.
 
 from .models import Product 
 
 def home(request):
+    '''
     if request.user.is_authenticated:
         username_is = "Francis Xavier using context"
         context = {"username_is": username_is}
     else:
-        context = {"username_is": "Unknown"}
+        context = {"username_is": "Unknown"}'''
+    products = Product.objects.all()
+    context = {"products": products}
     template = 'products/home.html'
     return render(request, template, context)
 

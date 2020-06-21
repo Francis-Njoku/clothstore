@@ -15,8 +15,11 @@
     {% block styles %}
     {% endblock %}
     </style>
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap core CSS 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+-->
+{% load static %}
+<link rel="stylesheet" href='{% static "css/bootstrap.min.css" %}' integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <!-- Favicons -->
 <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/4.5/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
@@ -50,6 +53,11 @@
   </head>
   <body>
     {% include 'navbar.html' %}
+  
+    
+  {% block jumbotron %}
+  {% endblock %}  
+  
 <main role="main" class="container">
   {% block content %}
   {% endblock %}
