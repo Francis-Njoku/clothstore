@@ -28,13 +28,25 @@ Welcome to
   <div class="row">
   {% for product in products%}
   <div class="col-md-4">
-  {{product.title}} 
-  {{product.price}}
-
-  {% for item in product.productimage_set.all %}
-  <a src="{{item.image}}"><img src="{{ MEDIA_URL }}/media/{{ item.image }}" alt="image" /></a>
-  {% endfor %}
+  <div class=" card">
+  {% if product.productimage_set.all %}
+        {% for item in product.productimage_set.all %}
+                {% if not item.featured %}
+                <img class=' card-img-top' src="{{ MEDIA_URL }}/media/{{ item.image }}" alt="image" />
+                {% endif %}
+        {% endfor %}
+  {% else %}
+  <p>No Image</p>
+  {% endif %}
+  <div class=" card-body">
+  <h5 class=" card-title"><a href='{% url "single_product" product.slug %}'> {{product.title}}</a></h5>
+  <p class="card-text">{{product.price}}<br/> Slug:  {{product.description|truncatewords:15}}</p>
   </div>
+  </div>
+  
+ </div>
+  {% cycle "" "" "</div><div class='row'>" %}
+  
   {% endfor %}
   </div>  
- {% endblock%}
+ {% endblock%} 
