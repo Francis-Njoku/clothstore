@@ -1,10 +1,25 @@
 
 {% extends 'base.html' %}
-
-{% block content %}
+<div class="page-header">
 <h1>{{product.title}}</h1>
+</div>
+{% block content %}
+
+<div class="row">
+<div class="col-sm-4">
 <h1>{{images.image}}</h1>
 {% for item in images %}
     <img class=" img-fluid" src="{{ MEDIA_URL }}/media/{{ item.image }}" />
 {% endfor %}
+</div>
+<div class="col-sm-8">
+<h1>{{product.title}} <a href='#' class=' float-right'>Add to Cart</a></h1>
+<hr/>
+Price: {{product.price}}<br/>
+Shipping: Free with $25+ purchase.
+<hr/>
+<h4>{{product.description|linebreaks}}</h4>
+</div>
+</div>
+
 {% endblock %}
