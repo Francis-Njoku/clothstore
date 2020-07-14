@@ -6,6 +6,20 @@ from django.http import Http404
 
 from .models import Product, ProductImage
 
+def search(request):
+    try:
+        q = request.GET.get('q')
+    except:
+        q = None
+    if q:
+        products = Product.objects.filter(title__icontains=q)
+        context = {'query': q, 'products': products}
+        template = 'products/result.html'
+    else:
+        template = 'products/home.html'
+        context = {}       
+    return render(request, template, context)
+
 def home(request):
     '''
     if request.user.is_authenticated:
@@ -25,7 +39,7 @@ def all(request):
     return render(request, template, context)
 
 def single(request, slug):
-    #try:
+    try:
         product = Product.objects.get(slug=slug)
         #images = product.productimage_set.all()
         images = ProductImage.objects.filter(product=product)
@@ -34,6 +48,6 @@ def single(request, slug):
         context = {'product': product, "images": images}
         template = 'products/single2.html'
         return render(request, template, context)
-    #except:
-     #   raise Http404        
+    except:
+        raise Http404        
 

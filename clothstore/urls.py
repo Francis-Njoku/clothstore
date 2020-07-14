@@ -22,7 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('s/', views.search, name='search'),
     path('', views.home, name='home'),
     path('products/', views.all, name='products'),
     path('products/<slug:slug>', views.single, name='single_product')
@@ -31,7 +31,7 @@ urlpatterns = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('s/', views.search, name='search'),
     path('', views.home, name='home'),
     path('products/', views.all, name='products'),
     path('products/<slug:slug>', views.single, name='single_product')
