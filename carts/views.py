@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 
 # Create your views here.
-from .models import Cart
+from .models import Cart, CartItem
 from products.models import Product
 
 def view(request):
@@ -28,7 +28,7 @@ def update_cart(request, slug):
     # use session to update cart
 
     # expire session
-    request.session.set_expiry(300)
+    request.session.set_expiry(300000)
 
     try:
         the_id = request.session['cart_id']
@@ -45,23 +45,29 @@ def update_cart(request, slug):
     except Product.DoesNotExist:
         pass
     except:
-        pass    
+        pass
+
+    # check if cart item is created
+    cart_item, created = CartItem.objects.get_or_create(product=product)
+    if created:
+        print("yeah")   
 
     # Update product to cart
-    if not product in cart.products.all():
-        cart.products.add(product)
+    if not cart_item in cart.items.all():
+        cart.items.add(cart_item)
     else:
-        cart.products.remove(product)
+        cart.items.remove(cart_item)
 
     # Update total
     new_total = 0.00
-    for item in cart.products.all():
-        print(item.price)
-        print(float(item.price))
-        new_total += float(item.price)
+    for item in cart.items.all():
+        line_total = float(item.product.price) * item.quantity
+        print(item.product.price)
+        print(float(item.product.price))
+        new_total += line_total
 
-    request.session['items_total'] = cart.products.count()
-    print(cart.products.count())
+    request.session['items_total'] = cart.items.count()
+    print(cart.items.count())
     cart.total = new_total
     cart.save()    
 
