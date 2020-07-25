@@ -28,7 +28,20 @@ def update_cart(request, slug):
     # use session to update cart
 
     # expire session
-    request.session.set_expiry(300000)
+    request.session.set_expiry(3000000)
+
+    try:
+        qty = request.GET.get('qty')
+        update_qty = True
+    except:
+        qty = None
+        update_qty = False
+
+    try:
+        qty = request.GET.get('qty')
+    except:
+        qty = None
+        update_qty = False        
 
     try:
         the_id = request.session['cart_id']
@@ -39,6 +52,7 @@ def update_cart(request, slug):
         the_id = new_cart.id
 
     cart = Cart.objects.get(id=the_id)   
+    print('chima1')
 
     try:
         product = Product.objects.get(slug=slug)
@@ -46,28 +60,40 @@ def update_cart(request, slug):
         pass
     except:
         pass
+    print('chima2')
 
-    # check if cart item is created
-    cart_item, created = CartItem.objects.get_or_create(product=product)
+    # check if cart item is created and create if not exist
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
     if created:
         print("yeah")   
 
-    # Update product to cart
-    if not cart_item in cart.items.all():
-        cart.items.add(cart_item)
+    if update_qty and qty:
+        if int(qty) == 0:
+            cart_item.delete()
+        else:
+            cart_item.quantity = qty
+            cart_item.save()
     else:
-        cart.items.remove(cart_item)
+        pass        
+    print(qty)
+    print(int(qty))            
+
+    # Update product to cart
+    #if not cart_item in cart.items.all():
+    #    cart.items.add(cart_item)
+    #else:
+     #   cart.items.remove(cart_item)
 
     # Update total
     new_total = 0.00
-    for item in cart.items.all():
+    for item in cart.cartitem_set.all():
         line_total = float(item.product.price) * item.quantity
         print(item.product.price)
         print(float(item.product.price))
         new_total += line_total
 
-    request.session['items_total'] = cart.items.count()
-    print(cart.items.count())
+    request.session['items_total'] = cart.cartitem_set.count()
+    print(cart.cartitem_set.count())
     cart.total = new_total
     cart.save()    
 
