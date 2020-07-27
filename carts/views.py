@@ -37,12 +37,18 @@ def update_cart(request, slug):
         qty = None
         update_qty = False
 
+    notes = {}
     try:
-        qty = request.GET.get('qty')
+        color = request.GET.get('color')
+        notes['çolor'] = color
     except:
-        qty = None
-        update_qty = False        
+        color = None
 
+    try:
+        size = request.GET.get('size')
+        notes['size'] = size
+    except:
+        size = None
     try:
         the_id = request.session['cart_id']
     except:
@@ -72,6 +78,8 @@ def update_cart(request, slug):
             cart_item.delete()
         else:
             cart_item.quantity = qty
+            cart_item.notes = notes
+            print(notes)
             cart_item.save()
     else:
         pass        
