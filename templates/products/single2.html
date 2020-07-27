@@ -12,15 +12,29 @@
     <img class=" img-fluid" src="{{ MEDIA_URL }}/media/{{ item.image }}" />
 {% endfor %}
 </div>
-<div class="col-sm-8">
-<h1>{{product.title}} 
+<div class="col-md-8">
+<div class='row mb-3'>
+<div class='col-md-8'>
+<h1>{{product.title}} </h1>
+</div>
+<div class='col-md-4'>
 
-<a href='{% url "update_cart" product.slug  %}?qty=12' class=' float-right'>Add to Cart</a></h1>
 <form class='form-control' method="GET" action='{% url "update_cart" product.slug %}'>
-<input name='qty' type='number' placeholder='1' value='1' />
-<input name='attr' type='text' placeholder='color' />
-<input value='Add to cart' type='submit' />
+<input class='form-control' name='qty' type='number' placeholder='1' value='1' />
+<select class='form-control' name='color'>
+<option value='red'>Red</option>
+<option value='green'>Green</option>
+<option value='blue'>Blue</option>
+</select>
+<select class='form-control' name='size'>
+<option value='sm'>Small</option>
+<option value='md'>Medium</option>
+<option value='lg'>Large</option>
+</select>
+<input class='btn btn-info' value='Add to cart' type='submit' />
 </form>
+</div>
+</div>
 <hr/>
 Price: {{product.price}}<br/>
 Shipping: Free with $25+ purchase.
