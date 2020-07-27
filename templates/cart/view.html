@@ -11,6 +11,7 @@
 <th>Item</th>
 <th>Price</th>
 <th>Quantity</th>
+<th>Notes
 <th>Remove item</th>
 </thead>
 <tfoot>
@@ -25,6 +26,7 @@
 <td>{{ item.product }}</td>
 <td>{{ item.product.price }}</td>
 <td>{{ item.quantity }}</td>
+<td>{{item.notes}}
 <td><a href='{% url "update_cart" item.product.slug %}?qty=0'>Remove</a></td>
 </tr>
 
