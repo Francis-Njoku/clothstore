@@ -19,30 +19,29 @@
 </div>
 <div class='col-md-4'>
 
-<form class='form-control' method="GET" action='{% url "update_cart" product.slug %}'>
+<form class='form-control' method="POST" action='{% url "update_cart" product.slug %}'>
+{% csrf_token %}
 <input class='form-control' name='qty' type='number' placeholder='1' value='1' />
-<select class='form-control' name='color'>
-<option value='red'>Red</option>
-<option value='green'>Green</option>
-<option value='blue'>Blue</option>
-</select>
+
 {% if product.variation_set.all  %}
+
+{% if product.variation_set.colors  %}
+<select class='form-control' name='color'>
+{% for item in product.variation_set.colors %}
+<option value='{{item.title}}'>{{ item.title|capfirst}}</option>
+{% endfor %}
+</select>
+{% endif %}
 
 {% if product.variation_set.sizes  %}
 <select class='form-control' name='size'>
 {% for item in product.variation_set.sizes %}
-<option value='{{item.title|lower}}'>{{ item.title|capfirst}}</option>
+<option value='{{item.title}}'>{{ item.title|capfirst}}</option>
 {% endfor %}
 </select>
 {% endif %}
 
-{% if product.variation_set.colors  %}
-<select class='form-control' name='size'>
-{% for item in product.variation_set.colors %}
-<option value='{{item.title|lower}}'>{{ item.title|capfirst}}</option>
-{% endfor %}
-</select>
-{% endif %}
+
 {% endif %}
 <input class='btn btn-info' value='Add to cart' type='submit' />
 </form>

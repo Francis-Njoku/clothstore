@@ -3,7 +3,7 @@ from django.urls import reverse
 
 # Create your views here.
 from .models import Cart, CartItem
-from products.models import Product
+from products.models import Product, Variation
 
 def view(request):
     try:
@@ -31,25 +31,6 @@ def update_cart(request, slug):
     request.session.set_expiry(3000000)
 
     try:
-        qty = request.GET.get('qty')
-        update_qty = True
-    except:
-        qty = None
-        update_qty = False
-
-    notes = {}
-    try:
-        color = request.GET.get('color')
-        notes['çolor'] = color
-    except:
-        color = None
-
-    try:
-        size = request.GET.get('size')
-        notes['size'] = size
-    except:
-        size = None
-    try:
         the_id = request.session['cart_id']
     except:
         new_cart = Cart()
@@ -58,7 +39,6 @@ def update_cart(request, slug):
         the_id = new_cart.id
 
     cart = Cart.objects.get(id=the_id)   
-    print('chima1')
 
     try:
         product = Product.objects.get(slug=slug)
@@ -66,44 +46,85 @@ def update_cart(request, slug):
         pass
     except:
         pass
-    print('chima2')
 
-    # check if cart item is created and create if not exist
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    if created:
-        print("yeah")   
+    product_var = [] # product variation    
+    if request.method == "POST":
+        print(request.POST)
+        qty = request.POST['qty']
+        for item in request.POST:
+            key = item
+            val = request.POST[key]
+            print('both')
+            print(key, val)
+            print('end both')
+            try:
+                v = Variation.objects.get(product = product, category__iexact=key, title__iexact=val)
+                print('Start v')
+                print(v)
+                print('End v')
+                product_var.append(v)
+              
+            except:
+                pass     
 
-    if update_qty and qty:
-        if int(qty) == 0:
+        print('Start product var')
+        print(product_var)
+        print('End product var')
+        # check if cart item is created and create if not exist
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        if created:
+            print("yeah")   
+
+        
+        if int(qty) <= 0:
+            print("before delete")
             cart_item.delete()
-        else:
+            print("check delete")
+        else: 
+            print(product_var)
+            print('End var')
+            if len(product_var) > 0:
+                cart_item.variations.clear()
+                print('Start product var')
+                print(product_var)    
+                print('End product var')            
+                for item in product_var:
+                    cart_item.variations.add(item)
             cart_item.quantity = qty
-            cart_item.notes = notes
-            print(notes)
             cart_item.save()
-    else:
-        pass        
-    print(qty)
-    print(int(qty))            
 
-    # Update product to cart
-    #if not cart_item in cart.items.all():
-    #    cart.items.add(cart_item)
-    #else:
-     #   cart.items.remove(cart_item)
+           
+        
+        new_total = 0.00
+        for item in cart.cartitem_set.all():
+            line_total = float(item.product.price) * item.quantity
+            print(item.product.price)
+            print(float(item.product.price))
+            new_total += line_total
+            
+        request.session['items_total'] = cart.cartitem_set.count()
+        print(cart.cartitem_set.count())
+        cart.total = new_total
+        cart.save()  
+        return HttpResponseRedirect(reverse("cart"))  
+    else:
+        return HttpResponseRedirect(reverse("cart"))      
+
+    #print(qty)
+    #print(int(qty))            
+
+
 
     # Update total
-    new_total = 0.00
-    for item in cart.cartitem_set.all():
-        line_total = float(item.product.price) * item.quantity
-        print(item.product.price)
-        print(float(item.product.price))
-        new_total += line_total
-
-    request.session['items_total'] = cart.cartitem_set.count()
-    print(cart.cartitem_set.count())
-    cart.total = new_total
-    cart.save()    
+     # Update product to cart
+            
+    '''     
+    
+    if not cart_item in cart.cartitem_set.all():
+            cart.items.add(cart_item)
+        else:
+            cart.items.remove(cart_item)
+    ''' 
 
     # Return to cart     
     return HttpResponseRedirect(reverse("cart"))        

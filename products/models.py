@@ -43,13 +43,13 @@ class VariationManager(models.Manager):
         return self.all().filter(category='size')
     
     def colors(self):
-        return super(VariationManager, self).filter(active=True).filter(category='colors')
+        return super(VariationManager, self).filter(active=True).filter(category='color')
 
 
 
 VAR_CATEGORIES = (
-    ('size', 'size'),
     ('color', 'color'),
+    ('size', 'size'),
     ('package', 'package'),
 )        
 
@@ -57,7 +57,7 @@ VAR_CATEGORIES = (
 class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)  
-    category = models.CharField(max_length=120, choices=VAR_CATEGORIES, default='size')
+    category = models.CharField(max_length=120, choices=VAR_CATEGORIES, default='color')
     image = models.ForeignKey(ProductImage, null=True, blank=True, on_delete=models.CASCADE)
     price = models.DecimalField(null=True, max_digits=100, decimal_places=2, blank=True)      
     active = models.BooleanField(default=True)
@@ -65,6 +65,6 @@ class Variation(models.Model):
 
     objects = VariationManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
