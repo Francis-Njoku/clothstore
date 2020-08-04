@@ -19,7 +19,7 @@
 </div>
 <div class='col-md-4'>
 
-<form class='form-control' method="POST" action='{% url "update_cart" product.slug %}'>
+<form class='form-control' method="POST" action='{% url "add_to_cart" product.slug %}'>
 {% csrf_token %}
 <input class='form-control' name='qty' type='number' placeholder='1' value='1' />
 
