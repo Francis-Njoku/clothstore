@@ -27,7 +27,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('products/', views.all, name='products'),
     path('cart/', cart_view.view, name='cart'),
-    path('cart/<slug:slug>', cart_view.update_cart, name='update_cart'),
+    path('cart/<slug:slug>', cart_view.add_to_cart, name='add_to_cart'),
     path('products/<slug:slug>', views.single, name='single_product')
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
@@ -38,7 +38,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('products/', views.all, name='products'),
     path('cart/', cart_view.view, name='cart'),
-    path('cart/<slug:slug>', cart_view.update_cart, name='update_cart'),
+    path('cart/<slug:slug>', cart_view.add_to_cart, name='add_to_cart'),
     path('products/<slug:slug>', views.single, name='single_product')
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
