@@ -33,7 +33,7 @@
 <td>{{ item.product.price }}</td>
 <td>{{ item.quantity }}</td>
 <td></td>
-<td><a href='{% url "add_to_cart" item.product.slug %}?qty=0'>Remove</a></td>
+<td><a href='{% url "remove_from_cart" item.id %}'>Remove</a></td>
 </tr>
 
 {% endfor %}
