@@ -13,6 +13,17 @@ def view(request):
     if the_id:
         cart = Cart.objects.get(id=the_id)
         context = {"cart": cart}
+        # Update details
+        new_total = 0.00
+        for item in cart.cartitem_set.all():
+            line_total = float(item.product.price) * item.quantity
+            new_total += line_total
+            
+        request.session['items_total'] = cart.cartitem_set.count()
+        #print(cart.cartitem_set.count())
+        cart.total = new_total
+        cart.save() 
+        context = {"cart": cart} 
     else:
         empty_message = "Your Cart is Empty, please keep shopping."
         context = {"empty": True, 'empty_message': empty_message}    
@@ -22,6 +33,20 @@ def view(request):
     '''
     template = "cart/view.html"
     return render(request, template, context)
+
+def remove_from_cart(request, id):
+    try:
+        the_id = request.session['cart_id']
+        cart  =Cart.objects.get(id=the_id)
+    except:
+        return HttpResponseRedirect(reverse("cart"))
+
+    cartitem = CartItem.objects.get(id=id)
+    cartitem.delete()
+    # Remove id from database
+    #cartitem.cart= None
+    # cartitem.save()
+    return HttpResponseRedirect(reverse("cart"))            
 
 def add_to_cart(request, slug):
     #cart = Cart.objects.all()[0]
@@ -67,15 +92,6 @@ def add_to_cart(request, slug):
         cart_item.quantity = qty
         cart_item.save()
         
-        new_total = 0.00
-        for item in cart.cartitem_set.all():
-            line_total = float(item.product.price) * item.quantity
-            new_total += line_total
-            
-        request.session['items_total'] = cart.cartitem_set.count()
-        #print(cart.cartitem_set.count())
-        cart.total = new_total
-        cart.save()  
         return HttpResponseRedirect(reverse("cart"))  
     else:
         return HttpResponseRedirect(reverse("cart"))      

@@ -32,7 +32,9 @@ Welcome to
   {% if product.productimage_set.all %}
         {% for item in product.productimage_set.all %}
                 {% if not item.featured %}
-                <img class=' card-img-top' src="{{ MEDIA_URL }}/media/{{ item.image }}" alt="image" />
+                <div style="width:160px; height:160px; background-color:red">
+                </div>
+                <img class='img-fluid card-img-top' src="{{ MEDIA_URL }}/media/{{ item.image }}" alt="image" />
                 {% endif %}
         {% endfor %}
   {% else %}
