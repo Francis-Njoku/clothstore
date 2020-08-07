@@ -1,5 +1,6 @@
 from products import views
 from carts import views as cart_view
+from orders import views as order_view
 """clothstore URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -27,6 +28,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('products/', views.all, name='products'),
     path('cart/', cart_view.view, name='cart'),
+    path('checkout/', order_view.checkout, name='checkout'),
     path('cart/<int:id>', cart_view.remove_from_cart, name='remove_from_cart'),
     path('cart/<slug:slug>', cart_view.add_to_cart, name='add_to_cart'),
     path('products/<slug:slug>', views.single, name='single_product')
@@ -39,6 +41,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('products/', views.all, name='products'),
     path('cart/', cart_view.view, name='cart'),
+    path('checkout/', order_view.checkout, name='checkout'),
     path('cart/<int:id>', cart_view.remove_from_cart, name='remove_from_cart'),
     path('cart/<slug:slug>', cart_view.add_to_cart, name='add_to_cart'),
     path('products/<slug:slug>', views.single, name='single_product')
