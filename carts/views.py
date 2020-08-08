@@ -8,6 +8,7 @@ from products.models import Product, Variation
 def view(request):
     try:
         the_id = request.session['cart_id']
+        cart = Cart.objects.get(id=the_id)
     except:
         the_id = None
     if the_id:
