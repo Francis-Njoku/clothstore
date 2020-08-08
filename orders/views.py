@@ -5,7 +5,14 @@ from django.urls import reverse
 
 from carts.models import Cart
 from .models import Order
+from .utils import id_generator
 
+def orders(request):
+    context = {}
+    template = "orders/user.html"
+    return render(request, template, context)
+
+# require user login
 def checkout(request):
     try:
         the_id = request.session['cart_id']
@@ -19,8 +26,11 @@ def checkout(request):
     if created:
         # Assign a user to the order
         # assign address
-        new_order.order_id = str(time.time())
+        new_order.order_id = id_generator() #str(time.time())
         new_order.save()    
+
+    new_order.user = request.user
+    new_order.save()    
 
     # run credit card
     if new_order.status == "Finished":
