@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'products',
     'carts',
     'orders',
+    'accounts.apps.AccountsConfig'
 ]
 
 MIDDLEWARE = [
@@ -151,3 +152,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets', 'static_files')
+
+STRIPE_SECRET_KEY = "sk_test_51HEDiTHehoWvxEUUTw0SHiZHoQVRFytNyIaySRUYkVXwHbcYv2Kn0UyQISmABI0LQ4Wlt2954shaMQ09BM0yaV0k000LDfXvgC"
+STRIPE_PUBLISHABLE_KEY = "pk_test_51HEDiTHehoWvxEUUu82q7RCmNX50ABhIWAdBHx0HXLFYl8lr4pQr3RdX9jtUiWeMwrdlYwiWkrjenDdo9ge3VkoM00sG8PEStE"
