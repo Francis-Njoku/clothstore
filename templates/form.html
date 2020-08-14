@@ -6,7 +6,9 @@
 <form method="POST" action="">
 {% csrf_token %}
 {{ form.as_p}}
-<input type="submit" value="Login" class="btn btn-primary"/>
+
+
+<input type="submit" value="{% if submit_btn %}{{submit_btn}}{% else %}Submit{% endif %}" class="btn btn-primary"/>
 </div>
 
 {% endblock %}
