@@ -28,13 +28,20 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 DEFAULT_FROM_EMAIL = "Chimauche Njoku <njokuchimauche@gmail.com>"
-
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "njokuchimauche@gmail.com"
-EMAIL_HOST_PASSWORD = "password"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-# Application definition
+try:
+    from .email_settings import host, user, password
+    EMAIL_HOST = "smtp.gmail.com"
+    EMAIL_HOST_USER = "njokuchimauche@gmail.com"
+    EMAIL_HOST_PASSWORD = "password"
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    # Application definition
+except:
+    pass    
+    
+SITE_URL = "https://codelumen.com"    
+if DEBUG:
+    SITE_URL = "http://127.0.0.1:8000"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
