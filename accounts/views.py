@@ -1,14 +1,17 @@
 import re
 from django.shortcuts import render, HttpResponseRedirect, Http404
 from django.contrib.auth import login, logout, authenticate
-
+from django.contrib import messages
+from django.urls import reverse
 from .forms import LoginForm, RegistrationForm
 from .models import EmailConfirmed
 
 # Create your views here.
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    
+    messages.success(request, "Successfully Logged out. Feel free to login again.")
+    return HttpResponseRedirect('%s'%(reverse("auth_login")))
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -20,6 +23,9 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         login(request, user)
         user.emailconfirmed.active_user_email()
+        
+        messages.success(request, "Successfully logged in. Welcome back")
+        return HttpResponseRedirect("/")
     context = {
         "form": form,
         "submit_btn": btn,
@@ -35,6 +41,8 @@ def registration_view(request):
         new_user = form.save(commit=False)
         #new_user.first_name = "Chima" This is where you can do stuff with the model form
         new_user.save()
+        messages.success(request, "Successfully Registered. Please check your email now")
+        return HttpResponseRedirect("/")
         #username = form.cleaned_data['username']
         #password = form.cleaned_data['password']
         #user = authenticate(username=username, password=password)

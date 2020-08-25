@@ -2,6 +2,7 @@ import stripe
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.signals import user_logged_in
+from django.urls import reverse
 
 from django.db import models
 
@@ -44,7 +45,8 @@ class EmailConfirmed(models.Model):
 
     def active_user_email(self):
         # send email here & render a string
-        activation_url = "http://127.0.0.1:8000/accounts/activate/%s" %(self.activation_key)
+        activation_url = "%s/%s" %(settings.SITE_URL, reverse("activation_view", args=[self.activation_key]))
+       # activation_url = "http://127.0.0.1:8000/accounts/activate/%s" %(self.activation_key)
         context = {
             "activation_key": self.activation_key,
             "activation_url": activation_url,
