@@ -10,7 +10,12 @@ from .models import EmailConfirmed
 def logout_view(request):
     logout(request)
     
-    messages.success(request, "Successfully Logged out. Feel free to login again.")
+    messages.success(request, "Successfully Logged out. Feel free to <a href=''%s'>login</a> again." %(reverse("auth_login")), extra_tags='safe')
+        
+    messages.warning(request, "There is a warning.")
+    
+    messages.error(request, "There is an error.")
+
     return HttpResponseRedirect('%s'%(reverse("auth_login")))
 
 def login_view(request):
@@ -22,7 +27,7 @@ def login_view(request):
         password = form.cleaned_data['password']
         user = authenticate(username=username, password=password)
         login(request, user)
-        user.emailconfirmed.active_user_email()
+        #user.emailconfirmed.active_user_email()
         
         messages.success(request, "Successfully logged in. Welcome back")
         return HttpResponseRedirect("/")
