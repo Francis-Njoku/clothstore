@@ -3,7 +3,7 @@ from django.http import Http404
 
 
 # Create your views here.
-
+from marketing.models import MarketingMessage
 from .models import Product, ProductImage
 
 def search(request):
@@ -28,7 +28,9 @@ def home(request):
     else:
         context = {"username_is": "Unknown"}'''
     products = Product.objects.all()
-    context = {"products": products}
+    marketing_message = MarketingMessage.objects.all()[0]
+    context = {"products": products, 
+                "maketing_message": marketing_message}
     template = 'products/home.html'
     return render(request, template, context)
 
