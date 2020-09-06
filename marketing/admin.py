@@ -5,6 +5,7 @@ from .models import MarketingMessage
 
 # TO customize the model directly here
 class MarketingMessageAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "start_date", "end_date", "active", "featured"]
     class Meta:
         model = MarketingMessage
 

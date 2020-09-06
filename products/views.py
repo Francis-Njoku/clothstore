@@ -29,8 +29,10 @@ def home(request):
         context = {"username_is": "Unknown"}'''
     products = Product.objects.all()
     marketing_message = MarketingMessage.objects.all()[0]
+    print(marketing_message)
+    print('chima')
     context = {"products": products, 
-                "maketing_message": marketing_message}
+                "marketing_message": marketing_message}
     template = 'products/home.html'
     return render(request, template, context)
 
