@@ -2,6 +2,7 @@ from products import views
 from carts import views as cart_view
 from orders import views as order_view
 from accounts import views as account_view
+from marketing import views as marketing_view
 """clothstore URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -31,6 +32,7 @@ urlpatterns = [
     path('cart/', cart_view.view, name='cart'),
     path('checkout/', order_view.checkout, name='checkout'),
     path('orders/', order_view.orders, name='orders'),
+    path('ajax/dismiss-marketing-message/', marketing_view.dismiss_marketing_message, name='dismiss_marketing_message'),
     path('accounts/login/', account_view.login_view, name='auth_login'),    
     path('accounts/logout/', account_view.logout_view, name='auth_logout'),
     path('accounts/register', account_view.registration_view, name='auth_register'),
@@ -48,6 +50,7 @@ urlpatterns = [
     path('products/', views.all, name='products'),
     path('cart/', cart_view.view, name='cart'),
     path('orders/', order_view.orders, name='orders'),
+    path('ajax/dismiss-marketing-message/', marketing_view.dismiss_marketing_message, name='dismiss_marketing_message'),
     path('checkout/', order_view.checkout, name='checkout'),
     path('accounts/login/', account_view.login_view, name='auth_login'),        
     path('accounts/logout/', account_view.logout_view, name='auth_logout'),
