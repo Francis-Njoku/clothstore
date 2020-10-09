@@ -14,14 +14,43 @@ Welcome to
 {% endblock%}
 
 {% block jumbotron %}
-<div class="container">
+
+{% if sliders %}
+ <div class="container">
+  <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    {% for slider in sliders %}
+
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+    {% if slider.url_link %}<a href='{{ slider.url_link }}'>{% endif %}
+    <img src="{{ slider.get_image_url }}" alt="first slide">
+    {% if slider.url_link %}</a>{% endif %}
+  <div class="carousel-caption d-none d-md-block">
+  {% if slider.header_text %}
+    <h2>{{ slider.header_text|safe}}</h2>
+  {% endif %}
+  {% if slider.text %}
+  <p>{{ slider.text|safe }}</p>
+  {% endif %}  
+    
+  </div>
+    </div>
+    
+    {% endfor %}
+  </div>
+</div>
+  </div>
+{% endif %}
+
+
+<!--<div class="container">
 <div class="jumbotron">
     <h1>Navbar example</h1>
     <h1>Hello {{username_is}}</h1>
     <p class="lead">This example is a quick exercise to illustrate how the top-aligned navbar works. As you scroll, this navbar remains in its original position and moves with the rest of the page.</p>
     <a class="btn btn-lg btn-primary" href="/docs/4.5/components/navbar/" role="button">View navbar docs &raquo;</a>
 </div>
-</div>
+</div>-->
 {% endblock %}
  {% block content%}
 
