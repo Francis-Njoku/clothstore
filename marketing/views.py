@@ -3,6 +3,8 @@ from django.shortcuts import render, HttpResponse, Http404
 from django.utils import timezone
 import datetime
 
+from .forms import EmailForm
+
 # Create your views here.
 def dismiss_marketing_message(request):
     print(timezone.now())
@@ -18,3 +20,15 @@ def dismiss_marketing_message(request):
     else:
         raise Http404
 
+def email_signup(request):
+    if request.method == "POST":
+        form = EmailForm(request.POST or None)
+        if form.is_valid():
+            print(form.cleaned_data['email'])
+            return HttpResponse('Success')
+        if form.errors:
+            print(form.errors)
+            json_data = json.dumps(form.errors)    
+            return HttpResponse(json_data, content_type='application/json')
+    else:
+        raise Http404        

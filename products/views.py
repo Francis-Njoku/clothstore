@@ -3,8 +3,9 @@ from django.http import Http404
 
 
 # Create your views here.
-from marketing.models import MarketingMessage
+from marketing.models import MarketingMessage, Slider
 from .models import Product, ProductImage
+from marketing.forms import EmailForm
 
 def search(request):
     try:
@@ -27,13 +28,15 @@ def home(request):
         context = {"username_is": username_is}
     else:
         context = {"username_is": "Unknown"}'''
+    sliders = Slider.objects.all_featured()    
     products = Product.objects.all()
     marketing_message = MarketingMessage.objects.all()[0]
     print(marketing_message)
     print('chima')
-    context = {"products": products, 
-                "marketing_message": marketing_message}
     template = 'products/home.html'
+    context = {"products": products, 
+               "marketing_message": marketing_message,
+               "sliders": sliders}        
     return render(request, template, context)
 
 def all(request):
