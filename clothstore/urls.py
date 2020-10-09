@@ -39,6 +39,7 @@ urlpatterns = [
     path('cart/<int:id>', cart_view.remove_from_cart, name='remove_from_cart'),
     path('cart/<slug:slug>', cart_view.add_to_cart, name='add_to_cart'),
     path('products/<slug:slug>', views.single, name='single_product'),
+    path('ajax/email_signup', marketing_view.email_signup, name='ajax_email_signup'),
     path('accounts/activate/<str:activation_key>', account_view.activation_view, name='activation_view')
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
@@ -58,6 +59,7 @@ urlpatterns = [
     path('cart/<int:id>', cart_view.remove_from_cart, name='remove_from_cart'),
     path('cart/<slug:slug>', cart_view.add_to_cart, name='add_to_cart'),
     path('products/<slug:slug>', views.single, name='single_product'),
+    path('ajax/email_signup', marketing_view.email_signup, name='ajax_email_signup'),
     path('accounts/activate/<str:activation_key>', account_view.activation_view, name='activation_view')
 
 
