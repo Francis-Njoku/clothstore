@@ -1,6 +1,7 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 # Create your models here.
 class MarketingMessageQueryset(models.query.QuerySet):
@@ -19,7 +20,7 @@ class MarketingMessageManager(models.Manager):
     def all(self):
         return self.get_queryset().active()   
 
-    def featured(self):
+    def all_featured(self):
         return self.get_queryset().active().featured()
 
     def get_featured_item(self):
@@ -51,6 +52,8 @@ def slider_upload(instance, filename):
 
 class Slider(models.Model):
     image = models.FileField(upload_to=slider_upload)
+    order = models.IntegerField(default=0) # ordering of featured image
+    url_link = models.CharField(max_length=250, null=True, blank=True)
     header_text = models.CharField(max_length=120, null=True, blank=True)
     text = models.CharField(max_length=120, null=True, blank=True)
     active = models.BooleanField(default=False)
@@ -64,7 +67,10 @@ class Slider(models.Model):
     #messages = MarketingMessageManager()
      
     def __str__(self):
-        return str(self.message[:12])
+        return str(self.image)
 
     class Meta:
-        ordering = ['-start_date', '-end_date']    
+        ordering = ['order', '-start_date', '-end_date']    
+
+    def get_image_url(self):
+        return "%s/%s" %(settings.MEDIA_URL, self.image) 
