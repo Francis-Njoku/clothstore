@@ -4,6 +4,8 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
 
+from accounts.forms import UserAddressForm
+from accounts.models import UserAddress
 from carts.models import Cart
 from .models import Order
 from .utils import id_generator
@@ -34,7 +36,14 @@ def checkout(request):
         new_order.save()       
     except:
         # Work on some error message
-        return HttpResponseRedirect(reverse("cart"))     
+        return HttpResponseRedirect(reverse("cart")) 
+
+
+    address_form = UserAddressForm(request.POST or None)
+    if address_form.is_valid():
+        new_address = address_form.save(commit=False)
+        new_address.user = request.user
+        new_address.save()        
 
     # run credit card
     if new_order.status == "Finished":
@@ -42,6 +51,7 @@ def checkout(request):
         del request.session['items_total'] 
         return HttpResponseRedirect(reverse("cart"))  
 
-    context = {}
-    template = "products/home.html"
+    context = {"address_form": address_form}
+    #template = "products/home.html"
+    template = "orders/checkout.html"
     return render(request, template, context)
