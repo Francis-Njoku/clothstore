@@ -10,6 +10,25 @@ from django.db import models
 stripe.api_key = settings.STRIPE_SECRET_KEY
 from django.template.loader import render_to_string
 
+class UserAddress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,  on_delete=models.CASCADE)
+    address = models.CharField(max_length=120)
+    address2 = models.CharField(max_length=120, null=True, blank=True)
+    city = models.CharField(max_length=120)
+    state = models.CharField(max_length=120, null=True, blank=True)
+    country = models.CharField(max_length=120)
+    zipcode = models.CharField(max_length=25)
+    phone = models.CharField(max_length=120)
+    shipping = models.BooleanField(default=True)
+    billing = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True) 
+
+    def __str__(self):
+        return str(self.user.username)
+     
+
+
 class UserStripe(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     stripe_id = models.CharField(max_length=120, null=True, blank=True)
@@ -61,3 +80,11 @@ class EmailConfirmed(models.Model):
         send_mail(subject, message, from_email, [self.user.email], kwargs)     
          
     
+
+class EmailMarketingSignUp(models.Model):
+    email = models.EmailField()
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)    
+
+    def __str__(self):
+        return str(self.email)
