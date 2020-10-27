@@ -130,13 +130,14 @@ $(document).ready(function(){
     });
   });
 
+  {% if not request.user.is_authenticated and not request.session.email_added_marketing and not "accounts" in request.get_full_path %}
   function showModal(){
     $("#exampleModal").modal("show");
   //console.log("showing...")
   //setTimeout(showModal, 5000);
   }
-  showModal();
-   //setTimeout(showModal, 5000);
+  //showModal();
+   setTimeout(showModal, 5000);
 
     $("#send-market-form").click(function(e){
     e.preventDefault()
@@ -144,16 +145,25 @@ $(document).ready(function(){
     console.log(mForm)
     $.ajax({
       type: "POST",
-      url: "{# url '' #}",
+      url: "{% url 'ajax_email_signup' %}",
       data: mForm,
-      success: function(){
-        console.log("worked!")
+      success: function(data){
+        //console.log(data)
+        $("#modalMessage").html("<p>"+ obj.email + "</p>")
+        $("#exampleModal").modal("hide");
+
       },
-      error: function(){
-        console.log("error!")
+      error: function(data){
+        //console.log(data)
+        //console.log(data.responseJSON)
+        var obj = data.responseJSON
+       // console.log(obj)
+       // console.log(obj.email)
+        $("#modalMessage").html("<p>"+ obj.email + "</p>")
       },
     });
     });
+    {% endif %}
 
 });
 
