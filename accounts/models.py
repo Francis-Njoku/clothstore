@@ -10,6 +10,20 @@ from django.db import models
 stripe.api_key = settings.STRIPE_SECRET_KEY
 from django.template.loader import render_to_string
 
+class UserDefaultAddress(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,  on_delete=models.CASCADE)
+    shipping = models.ForeignKey("UserAddress",null=True, blank=True, related_name="user_address_shipping_default",  on_delete=models.CASCADE)
+    billing = models.ForeignKey("UserAddress",null=True, blank=True, related_name="user_address_billing_default",  on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user.username)
+    
+
+
+class UserAddressManager(models.Manager):
+    def get_billing_addresses(self, user):
+        return super(UserAddressManager, self).filter(billing=True).filter(user=user)
+
 class UserAddress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,  on_delete=models.CASCADE)
     address = models.CharField(max_length=120)
@@ -25,8 +39,15 @@ class UserAddress(models.Model):
     updated = models.DateTimeField(auto_now_add=False, auto_now=True) 
 
     def __str__(self):
-        return str(self.user.username)
+        return str(self.get_address())
+
+    def get_address(self):
+        return "%s, %s, %s, %s, %s" %(self.address, self.city, self.state, self.country, self.zipcode)    
      
+    objects = UserAddressManager()
+
+    class Meta:
+        ordering = ['-updated', '-timestamp']
 
 
 class UserStripe(models.Model):

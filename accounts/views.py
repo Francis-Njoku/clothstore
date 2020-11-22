@@ -3,8 +3,8 @@ from django.shortcuts import render, HttpResponseRedirect, Http404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.urls import reverse
-from .forms import LoginForm, RegistrationForm
-from .models import EmailConfirmed
+from .forms import LoginForm, RegistrationForm, UserAddressForm
+from .models import EmailConfirmed, UserDefaultAddress
 
 # Create your views here.
 def logout_view(request):
@@ -23,6 +23,7 @@ def login_view(request):
     btn = "Login"
 
     if form.is_valid():
+        print(form.cleaned_data['username'])
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
         user = authenticate(username=username, password=password)
@@ -85,3 +86,28 @@ def activation_view(request, activation_key):
         return render(request, "accounts/activation_complete.html", context)  
     else:
         raise Http404      
+
+def add_user_address(request):
+    print(request.GET)
+    try:
+        redirect2 = request.GET.get("next")
+    except:
+        redirect2 = None
+    form = UserAddressForm(request.POST or None)    
+    if request.method == "POST":
+        
+        if form.is_valid():
+            new_address = form.save(commit=False)
+            new_address.user = request.user
+            new_address.save() 
+            is_default  = form.cleaned_data["default"]
+            if is_default:
+                default_address, created = UserDefaultAddress.objects.get_or_create(user=request.user)
+                default_address.shipping = new_address
+                default_address.save()
+            if redirect2 is not None:
+                return HttpResponseRedirect(reverse(str(redirect2))+"?address_added=true")
+    submit_btn = "Save Address"            
+    form_title = "Add New Address"
+    return render(request, "form.html", {"form": form,
+    "submit_btn":submit_btn,"form_title":form_title})               
