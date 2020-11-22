@@ -73,4 +73,4 @@ def user_created(sender, instance, created, *args, **kwargs):
             email_confirmed.save()
             email_confirmed.active_user_email()
 
-post_save.connect(user_created, sender=User)
+post_save.connect(user_created, sender=settings.AUTH_USER_MODEL)

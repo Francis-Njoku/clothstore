@@ -26,6 +26,7 @@ SECRET_KEY = '2&c8mudy$4y#s07b)#@gt9b*t8&difmn@5iuq8r%!cj)o%=c^i'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+DEFAULT_TAX_RATE = 0.08 # 8%
 
 DEFAULT_FROM_EMAIL = "Chimauche Njoku <njokuchimauche@gmail.com>"
 try:
